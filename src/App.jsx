@@ -1,21 +1,29 @@
 import './App.css';
 import NavigationAll from './Components/Navigation/NavigationAll';
+import Footer from './Components/SingleComponents/Footer';
 import Shop from './Pages/Shop/Shop';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 
 function App() {
   return (
     <Router>
+      {/* Navigation */}
       <NavigationAll />
-      
-      {/* Main content wrapper with padding-top to avoid navbar overlap */}
-      <main style={{ paddingTop: 'calc(2rem + 4rem)' }} >
+
+      {/* Main content wrapper */}
+      <main className="min-h-screen pt-[6rem] px-4 sm:px-6 md:px-8">
         <Routes>
           <Route path="/shop" element={<Shop />} />
-          {/* Add other routes here as needed */}
-          <Route path="*" element={<Shop />} /> {/* Default/fallback route */}
+
+          {/* Add more routes here as needed */}
+
+          {/* Redirect all unknown routes to /shop */}
+          <Route path="*" element={<Navigate to="/shop" replace />} />
         </Routes>
       </main>
+
+      {/* Footer */}
+      <Footer />
     </Router>
   );
 }

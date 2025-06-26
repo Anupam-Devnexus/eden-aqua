@@ -3,6 +3,7 @@ import ShopHero from "../../Components/SingleComponents/ShopHero";
 import FourGroup from "../../Components/SingleComponents/FourGroup";
 import ProductSliderShop from "../../Components/SingleComponents/ProductSliderShop";
 import { Helmet } from "react-helmet";
+import NewsLetter from "../../Components/SingleComponents/NewsLetter";
 
 export default function Shop() {
     const data = [
@@ -149,7 +150,7 @@ export default function Shop() {
                         <img
                             src="https://res.cloudinary.com/dt4ohfuwc/image/upload/v1750828438/image_29_1_m084hg.png"
                             alt="Water Bottles"
-                            className="h-[40vh] object-contain drop-shadow-lg"
+                            className="h-[40vh] object-contain drop-shadow-lg z-0"
                         />
                     </div>
 
@@ -171,10 +172,13 @@ export default function Shop() {
                                 <span className="text-base md:text-2xl font-bold uppercase tracking-wide">{label}</span>
                             </div>
                         ))}
-                        <button className="bg-white cursor-pointer tracking-wider rounded-md text-[var(--primary-color)] px-3 py-1 font-medium w-[30%]">SUBSCRIBE NOW</button>
+                        <button className="bg-white cursor-pointer tracking-wider rounded-md text-[var(--primary-color)] px-3 py-1 font-medium w-[70%] md:w-[30%]">SUBSCRIBE NOW</button>
                     </div>
                 </section>
-
+                {/* NEWS LETTER */}
+                <section>
+                    <NewsLetter />
+                </section>
             </main>
         </>
     );
