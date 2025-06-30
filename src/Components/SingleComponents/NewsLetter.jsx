@@ -2,7 +2,7 @@ import React from "react";
 
 export default function NewsLetter() {
     return (
-        <div className="flex flex-col items-center gap-10 px-1 py-12 sm:px-6 md:px-8 lg:px-10 bg-white w-full">
+        <div className="flex flex-col items-center gap-10 px-1 py-12 sm:px-6 md:px-8 lg:px-10  w-full">
             {/* Logo */}
             <img 
                 src="https://res.cloudinary.com/dt4ohfuwc/image/upload/v1750841688/Group_2085663304_awpckc.png" 

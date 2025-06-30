@@ -4,7 +4,7 @@ import Footer from './Components/SingleComponents/Footer';
 import Shop from './Pages/Shop/Shop';
 import Sustainibility from "./Pages/Sustainibility/Sustainibility"
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-
+import About from './Pages/About/About';
 function App() {
   return (
     <Router>
@@ -16,6 +16,8 @@ function App() {
         <Routes>
           <Route path="/shop" element={<Shop />} />
           <Route path="/sustainability" element={<Sustainibility />} />
+          <Route path="/about" element={<About />} />
+
 
 
           {/* Add more routes here as needed */}
