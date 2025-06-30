@@ -13,7 +13,7 @@ export default function NavigationBar() {
     { name: "SUBSCRIBE & SAVE", path: "/subscribe" },
     { name: "SUSTAINBILITY", path: "/sustainability" },
     { name: "ABOUT", path: "/about" },
-    { name: "WHERE TO BUY", path: "/where-to-buy" },
+    { name: "WHERE TO BUY", path: "/wheretobuy" },
   ];
 
   return (
@@ -25,6 +25,7 @@ export default function NavigationBar() {
           src="https://res.cloudinary.com/dt4ohfuwc/image/upload/v1750828045/Group_2085663303_o82ll5.png"
           alt="Logo"
           className="w-[110px] sm:w-[120px] h-auto"
+          onClick={() => navigate('/')}
         />
 
         {/* Desktop Navigation */}

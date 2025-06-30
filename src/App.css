@@ -14,7 +14,16 @@
     animation: fadeIn 1s ease-out forwards;
   }
 }
-
+/* Leaflet required styles */
+.leaflet-container {
+  height: 600px;
+  width: 100%;
+}
+@media (max-width: 640px) {
+  .leaflet-container {
+    height: 400px !important;
+  }
+}
 :root {
     --primary-color: #021624;
     --secondary-color: #1C2E3A;

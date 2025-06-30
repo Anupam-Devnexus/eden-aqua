@@ -3,14 +3,14 @@ import React from "react";
 export default function AboutHero() {
   return (
     <div
-      className="h-[80vh] flex items-center justify-center flex-col bg-cover bg-center relative px-4 text-center"
+      className="h-[80vh] flex items-center justify-center flex-col bg-cover bg-center relative px-1 text-center"
       style={{
         backgroundImage:
           "url('https://res.cloudinary.com/dt4ohfuwc/image/upload/v1750829586/image_35_tcu3gx.png')",
       }}
     >
       {/* Breadcrumb */}
-      <div className="absolute top-6 left-4 sm:left-8 text-white text-sm font-semibold flex items-center gap-2">
+      <div className="absolute top-3 left-4 sm:left-8 text-white text-sm font-semibold flex items-center gap-2">
         Home : <span className="text-[#0077B6]">ABOUT</span>
       </div>
 

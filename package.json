@@ -10,12 +10,17 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@react-google-maps/api": "^2.20.7",
     "@tailwindcss/vite": "^4.1.10",
+    "geolib": "^3.3.4",
     "helmet": "^8.1.0",
+    "leaflet": "^1.9.4",
+    "leaflet-control-geocoder": "^3.2.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-helmet": "^6.1.0",
     "react-icons": "^5.5.0",
+    "react-leaflet": "^5.0.0",
     "react-router-dom": "^7.6.2",
     "tailwindcss": "^4.1.10",
     "zustand": "^5.0.5"

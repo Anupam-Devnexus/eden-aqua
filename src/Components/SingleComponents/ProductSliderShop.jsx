@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { MdNavigateNext, MdOutlineNavigateBefore } from "react-icons/md";
-
+import { useNavigate } from "react-router-dom";
 export default function ProductSliderShop() {
+  const navigate = useNavigate();
   const ProductData = [
     {
       name: "Events & Kid Friendly",
@@ -128,7 +129,9 @@ export default function ProductSliderShop() {
         <button className="px-6 py-2 cursor-pointer rounded-md text-[var(--primary-color)] font-bold border border-[var(--primary-color)] hover:bg-[var(--primary-color)] hover:text-white transition-all duration-300">
           ADD TO CART
         </button>
-        <button className="px-6 py-2 cursor-pointer rounded-md bg-[var(--primary-color)] text-white font-bold hover:opacity-90 transition-all duration-300">
+        <button
+        onClick={() => navigate('/shop')}
+        className="px-6 py-2 cursor-pointer rounded-md bg-[var(--primary-color)] text-white font-bold hover:opacity-90 transition-all duration-300">
           VIEW PRODUCTS
         </button>
       </div>

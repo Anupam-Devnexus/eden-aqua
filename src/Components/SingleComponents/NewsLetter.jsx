@@ -1,6 +1,7 @@
 import React from "react";
-
+import { useNavigate } from "react-router-dom";
 export default function NewsLetter() {
+    const navigate = useNavigate()
     return (
         <div className="flex flex-col items-center gap-10 px-1 py-12 sm:px-6 md:px-8 lg:px-10  w-full">
             {/* Logo */}
@@ -20,7 +21,7 @@ export default function NewsLetter() {
             </div>
 
             {/* Action Buttons */}
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 w-full">
+            <div className="flex flex-col px-4 sm:flex-row items-center justify-center gap-4 w-full">
                 <button className="w-full cursor-pointer sm:w-auto bg-[var(--primary-color)] text-white px-5 py-2 rounded-lg flex items-center justify-center gap-2 hover:bg-opacity-90 transition">
                     <img 
                         src="https://res.cloudinary.com/dt4ohfuwc/image/upload/v1750920582/Bottle_of_Water_s0p3u1.png" 
@@ -29,7 +30,9 @@ export default function NewsLetter() {
                     />
                     SUBSCRIBE & SAVE
                 </button>
-                <button className="w-full cursor-pointer sm:w-auto px-5 py-2 border border-[var(--primary-color)] rounded-lg flex items-center justify-center gap-2 text-white bg-[var(--primary-color)] hover:bg-opacity-90 transition">
+                <button
+                onClick={()=> navigate('/wheretobuy')}
+                className="w-full cursor-pointer sm:w-auto px-5 py-2 border border-[var(--primary-color)] rounded-lg flex items-center justify-center gap-2 text-white bg-[var(--primary-color)] hover:bg-opacity-90 transition">
                     <img 
                         src="https://res.cloudinary.com/dt4ohfuwc/image/upload/v1750920583/Shop_dyvt4a.png" 
                         alt="Store" 
@@ -54,7 +57,7 @@ export default function NewsLetter() {
                     STAY IN THE KNOW
                 </span>
 
-                <div className="flex flex-col md:gap-0 gap-1 sm:flex-row w-full ">
+                <div className="flex flex-col md:gap-0 gap-1 px-4 sm:flex-row w-full ">
                     <input
                         type="email"
                         placeholder="EMAIL ADDRESS*"

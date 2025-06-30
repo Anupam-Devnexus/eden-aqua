@@ -1,6 +1,7 @@
 import React from "react";
-
+import { useNavigate } from "react-router-dom";
 export default function ShopHero() {
+  const navigate = useNavigate()
   return (
     <div
       className="h-[82vh] w-full bg-cover bg-center flex items-center justify-start px-6"
@@ -19,7 +20,9 @@ export default function ShopHero() {
             <button className="px-5 cursor-pointer py-2 border border-[var(--primary-color)] text-[var(--primary-color)] font-semibold rounded hover:bg-[var(--primary-color)] hover:text-white transition">
               SHOP NOW
             </button>
-            <button className="px-5 cursor-pointer py-2 bg-[var(--primary-color)] text-white font-semibold rounded hover:opacity-90 transition">
+            <button
+            onClick={()=>navigate('/shop')}
+            className="px-5 cursor-pointer py-2 bg-[var(--primary-color)] text-white font-semibold rounded hover:opacity-90 transition">
               VIEW PRODUCTS
             </button>
           </div>
