@@ -65,7 +65,7 @@ export default function ProductSliderShop() {
       </h1>
 
       {/* Slider */}
-      <div className="relative flex items-center justify-center w-full max-w-6xl">
+      <div className="relative flex items-center justify-center w-full max-w-full">
         <button
           onClick={rotateLeft}
           className="absolute left-2 top-1/2 transform -translate-y-1/2 text-3xl md:text-4xl text-[var(--primary-color)] hover:text-[var(--fifth-color)]"

@@ -2,6 +2,7 @@ import './App.css';
 import NavigationAll from './Components/Navigation/NavigationAll';
 import Footer from './Components/SingleComponents/Footer';
 import Shop from './Pages/Shop/Shop';
+import Sustainibility from "./Pages/Sustainibility/Sustainibility"
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 
 function App() {
@@ -11,9 +12,11 @@ function App() {
       <NavigationAll />
 
       {/* Main content wrapper */}
-      <main className="min-h-screen pt-[6rem] px-4 sm:px-6 md:px-8">
+      <main className="min-h-screen pt-[6rem] ">
         <Routes>
           <Route path="/shop" element={<Shop />} />
+          <Route path="/sustainability" element={<Sustainibility />} />
+
 
           {/* Add more routes here as needed */}
 

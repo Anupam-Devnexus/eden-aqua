@@ -2,9 +2,11 @@ import React, { useState } from "react";
 import { FaUser, FaShoppingCart } from "react-icons/fa";
 import { CiMenuFries } from "react-icons/ci";
 import { RxCross1 } from "react-icons/rx";
+import { useNavigate } from "react-router-dom";
 
 export default function NavigationBar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const navigate = useNavigate();
 
   const navigationData = [
     { name: "SHOP", path: "/shop" },
@@ -27,15 +29,16 @@ export default function NavigationBar() {
 
         {/* Desktop Navigation */}
         <ul className="hidden lg:flex items-center gap-8 text-[15px] font-semibold tracking-[2px]">
-          {navigationData.map((item, index) => (
-            <li
-              key={index}
-              className="cursor-pointer hover:underline transition-all duration-200"
-              onClick={() => window.location.href = item.path}
-            >
-              {item.name}
-            </li>
-          ))}
+          {navigationData.map(({ name, path }, index) => (
+  <li
+    key={index}
+    className="cursor-pointer hover:underline transition-all duration-200"
+    onClick={() => navigate(path)}
+  >
+    {name}
+  </li>
+))}
+
         </ul>
 
         {/* Menu toggle button (Mobile/Tablet) */}
@@ -56,23 +59,23 @@ export default function NavigationBar() {
 
       {/* Mobile/Tablet Dropdown Menu with Slide Transition */}
       <div
-        className={`lg:hidden transform transition-all duration-300 ease-in-out origin-top ${
-          isMenuOpen ? "scale-y-100 opacity-100" : "scale-y-0 opacity-0 pointer-events-none"
-        } bg-[var(--primary-color)] text-white flex flex-col gap-4 px-6 py-4 text-[15px] font-semibold tracking-[2px] shadow-md`}
+        className={`lg:hidden transform transition-all duration-300 ease-in-out origin-top ${isMenuOpen ? "scale-y-100 opacity-100" : "scale-y-0 opacity-0 pointer-events-none"
+          } bg-[var(--primary-color)] text-white flex flex-col gap-4 px-6 py-4 text-[15px] font-semibold tracking-[2px] shadow-md`}
         style={{ transformOrigin: "top" }}
       >
-        {navigationData.map((item, index) => (
-          <div
-            key={index}
-            className="cursor-pointer w-full border-b border-white pb-2"
-            onClick={() => {
-              setIsMenuOpen(false);
-              window.location.href = item.path;
-            }}
-          >
-            {item.name}
-          </div>
-        ))}
+       {navigationData.map(({ name, path }, index) => (
+  <div
+    key={index}
+    className="cursor-pointer w-full border-b border-white pb-2"
+    onClick={() => {
+      setIsMenuOpen(false);
+      navigate(path);
+    }}
+  >
+    {name}
+  </div>
+))}
+
 
         {/* Mobile/Tablet Icons */}
         <div className="flex items-center gap-4 bg-[var(--secondary-color)] w-full px-4 py-3 mt-2 rounded">

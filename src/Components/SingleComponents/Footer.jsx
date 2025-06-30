@@ -36,8 +36,8 @@ export default function Footer() {
                             </div>
                             <div>
                                 <h3 className="font-semibold text-lg">PHONE</h3>
-                                <p className="text-sm">+91-9992912121</p>
-                                <p className="text-sm">+91-9992912122</p>
+                                <p className="text-sm font-light">+91-9992912121</p>
+                                <p className="text-sm font-light">+91-9992912122</p>
                             </div>
                             <p className="text-sm">
                                 GREEN WAGON FOOD PRODUCTS PVT. LTD. IS THE AUTHORIZED ONLINE RESELLER FOR EDEN AQUA WATER
@@ -49,10 +49,13 @@ export default function Footer() {
                             <h3 className="font-semibold text-lg">QUICK LINKS</h3>
                             <ul className="space-y-1">
                                 {[
-                                    { name: "Home", link: "/" },
-                                    { name: "About Us", link: "/about" },
-                                    { name: "Product", link: "/product" },
-                                    { name: "Contact Us", link: "/contact" },
+                                    { name: "ABOUT", link: "/about" },
+                                    { name: "SUSTAINABILITY", link: "/sustainability" },
+                                    { name: "CONTACT", link: "/contact" },
+                                    { name: "SUBSCRIBE & SAVE", link: "/subscribe-save" },
+                                    { name: "PRIVACY POLICY", link: "/privacy" },
+                                    { name: "FAQS", link: "/faq" },
+                                    { name: "FEEDBACK", link: "/feedback" },
                                 ].map((e, index) => (
                                     <li key={index}>
                                         <a href={e.link} className="text-sm hover:underline">
