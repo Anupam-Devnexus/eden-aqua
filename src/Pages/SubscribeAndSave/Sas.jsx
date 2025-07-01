@@ -53,7 +53,7 @@ export default function Sas() {
       </div>
 
       {/* Four Group */}
-      <div className="">
+      <div className="flex items-center justify-center w-full">
         <FourGroup data={data} background={true} />
       </div>
       {/* Quote */}

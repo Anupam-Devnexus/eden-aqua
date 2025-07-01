@@ -12,12 +12,14 @@ export default function ShopHero() {
     >
       <div className="w-full md:w-1/2  flex flex-col items-center gap-4 text-center md:text-left">
         <div className="flex flex-col justify-center  gap-4">
-          <span className="text-[var(--primary-color)] font-bold text-3xl sm:text-4xl md:text-5xl leading-tight">
+          <span className="text-[var(--primary-color)] text-left font-bold text-3xl sm:text-4xl md:text-5xl leading-tight">
             Naturally Sourced, Expertly Packaged, Unmatched in Purity
           </span>
 
           <div className="flex gap-4">
-            <button className="px-5 cursor-pointer py-2 border border-[var(--primary-color)] text-[var(--primary-color)] font-semibold rounded hover:bg-[var(--primary-color)] hover:text-white transition">
+            <button
+             onClick={()=>navigate('/shop')}
+            className="px-5 cursor-pointer py-2 border border-[var(--primary-color)] text-[var(--primary-color)] font-semibold rounded hover:bg-[var(--primary-color)] hover:text-white transition">
               SHOP NOW
             </button>
             <button

@@ -5,7 +5,7 @@ export default function FourGroup({ background = false, data }) {
 
     return (
         <div
-            className={`grid grid-cols-1 md:grid-cols-4 items-center justify-center gap-8 py-8 ${background ? "bg-[var(--primary-color)]" : "bg-transparent"
+            className={`grid grid-cols-1 w-full mx-auto md:grid-cols-4 items-center px-6 justify-center gap-8 py-8 ${background ? "bg-[var(--primary-color)]" : "bg-transparent"
                 }`}
         >
             {data.map((item, index) => (

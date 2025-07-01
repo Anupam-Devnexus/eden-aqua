@@ -45,7 +45,10 @@ export default function Shop() {
 
             <main className="flex flex-col">
                 <ShopHero />
+                <div className="flex mx-auto px-6 items-center justify-center w-full">
+
                 <FourGroup data={data} />
+                </div>
 
                 {/* About Section */}
                 <section
@@ -81,7 +84,7 @@ export default function Shop() {
                 <ProductSliderShop />
 
                 {/* Quality Control Section */}
-                <section className="px-4 py-10 bg-gray-50    dark:bg-gray-900 text-center">
+                <section className="px-4 py-10 bg-gray-50  text-center">
                     <h2 className="text-2xl sm:text-4xl md:text-5xl font-semibold text-[var(--primary-color)] mb-8">
                         Quality Control Standards
                     </h2>

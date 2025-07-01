@@ -42,10 +42,13 @@ export default function NavigationBar() {
 
         {/* Mobile Menu Toggle */}
         <div
-          className="text-2xl lg:hidden cursor-pointer"
-          onClick={() => setIsMenuOpen(!isMenuOpen)}
+          className="text-2xl flex items-center gap-2 lg:hidden cursor-pointer"
+         
         >
+           <FaShoppingCart className="cursor-pointer" onClick={() => navigate("/cart")} />
+        <span  onClick={() => setIsMenuOpen(!isMenuOpen)}>
           {isMenuOpen ? <RxCross1 /> : <CiMenuFries />}
+          </span>  
         </div>
 
         {/* Desktop Icons */}
@@ -84,9 +87,9 @@ export default function NavigationBar() {
               navigate("/login");
             }}
           />
-          <div className="w-px h-4 bg-white" />
+          <div className="w-px h-4 bg-white hidden" />
           <FaShoppingCart
-            className="cursor-pointer"
+            className="cursor-pointer hidden"
             onClick={() => {
               setIsMenuOpen(false);
               navigate("/cart");
