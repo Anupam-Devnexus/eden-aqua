@@ -22,7 +22,9 @@ export default function NewsLetter() {
 
             {/* Action Buttons */}
             <div className="flex flex-col px-4 sm:flex-row items-center justify-center gap-4 w-full">
-                <button className="w-full cursor-pointer sm:w-auto bg-[var(--primary-color)] text-white px-5 py-2 rounded-lg flex items-center justify-center gap-2 hover:bg-opacity-90 transition">
+                <button
+                onClick={() => navigate('/subscribe')}
+                className="w-full cursor-pointer sm:w-auto bg-[var(--primary-color)] text-white px-5 py-2 rounded-lg flex items-center justify-center gap-2 hover:bg-opacity-90 transition">
                     <img 
                         src="https://res.cloudinary.com/dt4ohfuwc/image/upload/v1750920582/Bottle_of_Water_s0p3u1.png" 
                         alt="Bottle" 

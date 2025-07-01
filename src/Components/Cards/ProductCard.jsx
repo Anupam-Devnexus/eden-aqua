@@ -4,6 +4,7 @@ export default function ProductCard({
   image,
   name,
   price,
+  caseQuantity,
   defaultQuantity = 1,
   onAddToCart = () => {},
 }) {
@@ -18,7 +19,7 @@ export default function ProductCard({
   const decrementQuantity = () => setQuantity((q) => (q > 1 ? q - 1 : 1));
 
   const handleAddToCart = () => {
-    onAddToCart({ name, quantity, price });
+    onAddToCart({ name, quantity, price,caseQuantity });
     alert(`Added ${quantity} item(s) of "${name}" to cart`);
   };
 
@@ -26,6 +27,9 @@ export default function ProductCard({
     style: "currency",
     currency: "USD",
   }).format(price);
+
+  const totalPrice = (price * quantity * caseQuantity).toFixed(2)
+  const totalCase  = (quantity * caseQuantity).toFixed(2)
 
   return (
     <div className="max-w-sm w-full border border-gray-200 rounded-2xl shadow-sm hover:shadow-xl transition duration-300 bg-white">
@@ -40,11 +44,15 @@ export default function ProductCard({
         <h3 className="text-lg font-semibold text-[var(--primary-color)] leading-snug">{name}</h3>
 
         {/* Price */}
-        <p className="text-xl font-bold text-[var(--fifth-color)]">{formattedPrice}</p>
+        <div className="flex flex-col items-start gap-2 justify-between">
+
+        <p className="text-xl font-bold text-[var(--fifth-color)]">Price: {formattedPrice}</p>
+        <i className="text-xs font-light text-gray-600">Number of Bottles in 1 Case : {caseQuantity}</i>
+        </div>
 
         {/* Quantity with increment/decrement buttons */}
         <div className="flex items-center gap-3">
-          <label className="text-sm font-medium text-[var(--sixth-color)] select-none">Quantity:</label>
+          <label className="text-sm font-medium text-[var(--sixth-color)] select-none">Case Quantity:</label>
           <div className="flex items-center justify-center rounded-md overflow-hidden">
             <button
               type="button"
@@ -72,7 +80,12 @@ export default function ProductCard({
             </button>
           </div>
         </div>
-
+    <div className="text-[var(--fifth-color)] font-semibold text-base">
+          Total Price: <span className="text-xl">${totalPrice}</span>
+          <p className="text-xs text-gray-500">
+            ({totalCase} Bottles in total)
+          </p>
+        </div>
         {/* Add to Cart Button */}
         <button
           onClick={handleAddToCart}

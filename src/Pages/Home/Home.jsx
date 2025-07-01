@@ -182,7 +182,9 @@ export default function Shop() {
                             </div>
                         ))}
 
-                        <button className="bg-white cursor-pointer text-[var(--primary-color)] px-6 py-3 mt-4 rounded-md text-lg font-semibold tracking-wide shadow-md w-fit hover:bg-opacity-90 transition">
+                        <button
+                        onClick={() => navigate('/subscribe')}
+                        className="bg-white cursor-pointer text-[var(--primary-color)] px-6 py-3 mt-4 rounded-md text-lg font-semibold tracking-wide shadow-md w-fit hover:bg-opacity-90 transition">
                             SUBSCRIBE NOW
                         </button>
                     </div>
