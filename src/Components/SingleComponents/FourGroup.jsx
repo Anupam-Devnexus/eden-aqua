@@ -11,7 +11,7 @@ export default function FourGroup({ background = false, data }) {
             {data.map((item, index) => (
                 <div
                     key={index}
-                    className="flex flex-col gap-4 text-black items-center max-w-xs text-center"
+                    className={`flex flex-col gap-4 ${ background ? "text-white" : "text-black"} items-center max-w-xs text-center`}
                 >
                     <div className="bg-[var(--tertiary-color)] rounded-full p-1 flex items-center justify-center w-24 h-24 shadow-md">
                         <img
@@ -23,7 +23,7 @@ export default function FourGroup({ background = false, data }) {
 
                     <div className="w-[90%] h-[1px] bg-[var(--sixth-color)] rounded" />
 
-                    <span className="text-lg w-[1/2] font-semibold tracking-wide">{item.txt}</span>
+                    <span className={`text-base  ${ background ? "font-light" :" font-semibold"} tracking-wide`}>{item.txt}</span>
                 </div>
             ))}
         </div>
