@@ -3,11 +3,15 @@ import { useSwipeable } from "react-swipeable";
 import { MdNavigateNext, MdNavigateBefore } from "react-icons/md";
 import { FaMinus, FaPlus } from "react-icons/fa";
 import data from "../../assets/ProductDetails.json";
+import useProductStore from "../../Zustand/ProductStore";
+import toast from "react-hot-toast";
 
 export default function ProductDetails() {
   const [productIndex, setProductIndex] = useState(0);
   const [caseCount, setCaseCount] = useState(1);
   const product = data[productIndex];
+
+  const { addProduct } = useProductStore();
 
   const nextProduct = () => {
     setProductIndex((prev) => (prev + 1) % data.length);
@@ -33,6 +37,23 @@ export default function ProductDetails() {
     preventDefaultTouchmoveEvent: true,
     trackMouse: true,
   });
+
+  const handleAddToCart = () => {
+    const productData = {
+      id: product.id || Date.now(),
+      name: product.name,
+      price: product.price,
+      quantity: caseCount,
+      caseQuantity: product.caseQuantity || 1,
+      totalBottles: caseCount * (product.caseQuantity || 1),
+      totalPrice: (product.price * caseCount).toFixed(2),
+      image: product.image,
+      size: product.size,
+    };
+
+    addProduct(productData);
+    toast.success(`${product.name} (${caseCount} case${caseCount > 1 ? 's' : ''}) added to cart!`);
+  };
 
   return (
     <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -102,11 +123,14 @@ export default function ProductDetails() {
         {/* Pricing */}
         <div className="text-sm">
           <p className="text-gray-600 mb-1">
-            Price per Bottles:{" "}
+            Price per Bottle:{" "}
             <span className="font-semibold">${product.price.toFixed(2)}</span>
           </p>
           <p className="text-lg font-bold text-[var(--fifth-color)]">
-            TOTAL: ${(product.price * caseCount).toFixed(2)}
+            TOTAL: ${(product.price * caseCount * (product.caseQuantity || 1)).toFixed(2)}
+          </p>
+          <p className="text-xs text-gray-500">
+            ({caseCount * (product.caseQuantity || 1)} Bottles in total)
           </p>
         </div>
 
@@ -115,7 +139,7 @@ export default function ProductDetails() {
           <div className="flex items-center gap-3 rounded-xl border border-gray-300 px-4 py-2 shadow-sm bg-white transition-all duration-200 hover:shadow-md">
             <button
               onClick={handleDecrease}
-              className="w-8 h-8 flex items-center justify-center rounded-full bg-gray-100 hover:bg-red-100 text-red-500 hover:text-red-600 transition"
+              className="w-8 h-8 flex cursor-pointer items-center justify-center rounded-full bg-gray-100 hover:bg-red-100 text-red-500 hover:text-red-600 transition"
               aria-label="Decrease"
             >
               <FaMinus size={14} />
@@ -125,14 +149,17 @@ export default function ProductDetails() {
             </div>
             <button
               onClick={handleIncrease}
-              className="w-8 h-8 flex items-center justify-center rounded-full bg-gray-100 hover:bg-green-100 text-green-600 hover:text-green-700 transition"
+              className="w-8 h-8 flex cursor-pointer items-center justify-center rounded-full bg-gray-100 hover:bg-green-100 text-green-600 hover:text-green-700 transition"
               aria-label="Increase"
             >
               <FaPlus size={14} />
             </button>
           </div>
 
-          <button className="w-full sm:w-auto bg-[var(--primary-color)] text-white font-semibold px-6 py-3 rounded-md hover:bg-[var(--fifth-color)] transition">
+          <button
+            onClick={handleAddToCart}
+            className="w-full sm:w-auto bg-[var(--primary-color)] text-white font-semibold px-6 py-3 rounded-md hover:bg-[var(--fifth-color)] transition"
+          >
             ADD TO CART
           </button>
         </div>

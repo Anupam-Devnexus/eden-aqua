@@ -4,24 +4,24 @@ import FourGroup from "../../Components/SingleComponents/FourGroup";
 import Quote from "../../Components/SingleComponents/QuotesCarousel";
 import NewsLetter from "../../Components/SingleComponents/NewsLetter";
 export default function Sas() {
-     const data = [
-        {
-            logo: "https://res.cloudinary.com/dt4ohfuwc/image/upload/v1750836690/image_38_gj2lme.png",
-            txt: "Save 20% on Every Subscription Order",
-        },
-        {
-            logo: "https://res.cloudinary.com/dt4ohfuwc/image/upload/v1751347670/Group_2085663393_cgzkep.svg",
-            txt: "RECEIVE FAST, FREE SHIPPING",
-        },
-        {
-            logo: "https://res.cloudinary.com/dt4ohfuwc/image/upload/v1751347670/image_39_q1otop.svg",
-            txt: "SKIP OR CANCEL ANYTIME",
-        },
-        {
-            logo: "https://res.cloudinary.com/dt4ohfuwc/image/upload/v1751347670/image_40_ziltfa.svg",
-            txt: "ENJOY THE SMOOTH, SOFT TASTE OF FIJI WATER",
-        },
-    ];
+  const data = [
+    {
+      logo: "https://res.cloudinary.com/dt4ohfuwc/image/upload/v1750836690/image_38_gj2lme.png",
+      txt: "Save 20% on Every Subscription Order",
+    },
+    {
+      logo: "https://res.cloudinary.com/dt4ohfuwc/image/upload/v1751347670/Group_2085663393_cgzkep.svg",
+      txt: "RECEIVE FAST, FREE SHIPPING",
+    },
+    {
+      logo: "https://res.cloudinary.com/dt4ohfuwc/image/upload/v1751347670/image_39_q1otop.svg",
+      txt: "SKIP OR CANCEL ANYTIME",
+    },
+    {
+      logo: "https://res.cloudinary.com/dt4ohfuwc/image/upload/v1751347670/image_40_ziltfa.svg",
+      txt: "ENJOY THE SMOOTH, SOFT TASTE OF FIJI WATER",
+    },
+  ];
   return (
     <div
       className="min-h-screen w-full"
@@ -54,33 +54,33 @@ export default function Sas() {
 
       {/* Four Group */}
       <div className="">
-        <FourGroup data={data} background={true}/>
+        <FourGroup data={data} background={true} />
       </div>
       {/* Quote */}
       <div className="">
-        <Quote/>
+        <Quote />
       </div>
 
-{/* Ready To Subscribe Section */}
-<div
-  className="w-full flex flex-col items-center justify-center gap-6 py-16 px-4 sm:px-8"
- 
->
-  <h2 className="text-4xl sm:text-5xl font-bold text-[#021624] drop-shadow-md tracking-wide text-center max-w-3xl">
-    READY TO <span className="text-[var(--primary-color)]">SUBSCRIBE?</span>
-  </h2>
-  <button
-    className="mt-2 px-8 py-3 bg-[var(--primary-color)] text-white font-semibold rounded-lg shadow-lg 
+      {/* Ready To Subscribe Section */}
+      <div
+        className="w-full flex flex-col items-center justify-center gap-6 py-16 px-4 sm:px-8"
+
+      >
+        <h2 className="text-4xl sm:text-5xl font-bold text-[#021624] drop-shadow-md tracking-wide text-center max-w-3xl">
+          READY TO <span className="text-[var(--primary-color)]">SUBSCRIBE?</span>
+        </h2>
+        <button
+          className="mt-2 px-8 py-3 bg-[var(--primary-color)] text-white font-semibold rounded-lg shadow-lg 
                hover:bg-[var(--fifth-color)] transition duration-300 ease-in-out
                focus:outline-none focus:ring-4 focus:ring-[var(--primary-color)] focus:ring-opacity-50"
-  >
-    GET STARTED
-  </button>
-</div>
+        >
+          GET STARTED
+        </button>
+      </div>
 
-<div className="w-full">
-    <NewsLetter/>
-</div>
+      <div className="w-full">
+        <NewsLetter />
+      </div>
 
     </div>
   );

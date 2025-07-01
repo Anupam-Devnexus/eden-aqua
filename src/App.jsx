@@ -1,7 +1,7 @@
 import './App.css';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { lazy, Suspense } from 'react';
-
+import { Toaster } from 'react-hot-toast';
 // Lazy-loaded components
 const NavigationAll = lazy(() => import('./Components/Navigation/NavigationAll'));
 const Footer = lazy(() => import('./Components/SingleComponents/Footer'));
@@ -22,7 +22,7 @@ function App() {
       <Suspense fallback={<div className="text-center py-10">Loading...</div>}>
         {/* Navigation Bar */}
         <NavigationAll />
-
+   <Toaster position="bottom-right" />
         {/* Main Content */}
         <main className="min-h-screen pt-[5.9rem]">
           <Routes>

@@ -21,9 +21,9 @@ export default function NavigationBar() {
       <nav className="bg-[var(--primary-color)] text-white flex items-center justify-between h-16 w-full px-4 sm:px-6 lg:px-12 sticky top-0 z-50">
         {/* Logo */}
         <img
-          src="https://res.cloudinary.com/dt4ohfuwc/image/upload/v1751366917/EDEN-2_elcmv9.png"
+          src="https://res.cloudinary.com/dt4ohfuwc/image/upload/v1751368012/EDEN-2_z0913g.png"
           alt="Logo"
-          className="w-[110px] sm:w-[120px] h-auto cursor-pointer"
+          className="w-[110px] sm:w-[120px] cursor-pointer"
           onClick={() => navigate("/")}
         />
 

@@ -2,10 +2,14 @@ import React, { useState } from "react";
 import { MdNavigateNext, MdOutlineNavigateBefore } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import data from "../../assets/ProductDetails.json";
+import useProductStore from "../../Zustand/ProductStore";
+import toast from "react-hot-toast";
 
 export default function ProductSliderShop() {
   const navigate = useNavigate();
   const [activeIndex, setActiveIndex] = useState(0);
+
+  const { addProduct } = useProductStore();
 
   const rotateLeft = () => {
     setActiveIndex((prev) => (prev - 1 + data.length) % data.length);
@@ -22,6 +26,30 @@ export default function ProductSliderShop() {
       visible.push(data[(activeIndex + i + length) % length]);
     }
     return visible;
+  };
+
+  // Add to cart handler
+  const handleAddToCart = () => {
+    const product = data[activeIndex];
+
+    const productData = {
+      id: product.id || Date.now(), // use existing id or fallback
+      name: product.name,
+      price: product.price,
+      quantity: 1, // default 1 case
+      caseQuantity: product.caseQuantity || 1,
+      totalBottles: product.caseQuantity || 1,
+      totalPrice: (
+        product.price *
+        1 *
+        (product.caseQuantity || 1)
+      ).toFixed(2),
+      image: product.image,
+      size: product.size,
+    };
+
+    addProduct(productData);
+    toast.success(`${product.name} added to cart!`);
   };
 
   return (
@@ -64,9 +92,7 @@ export default function ProductSliderShop() {
                 alt={item.name}
                 className="w-32 h-auto mb-4 transition-transform duration-700 ease-in-out hover:scale-105"
               />
-              <h2 className="text-sm text-[var(--primary-color)]">
-                {item.name}
-              </h2>
+              <h2 className="text-sm text-[var(--primary-color)]">{item.name}</h2>
               <p className="text-lg font-bold text-gray-600">{item.size}</p>
             </div>
           ))}
@@ -97,7 +123,10 @@ export default function ProductSliderShop() {
 
       {/* Action Buttons */}
       <div className="flex items-center justify-center gap-4 flex-wrap">
-        <button className="px-6 py-2 cursor-pointer rounded-md text-[var(--primary-color)] font-bold border border-[var(--primary-color)] hover:bg-[var(--primary-color)] hover:text-white transition-all duration-300 ease-in-out">
+        <button
+          onClick={handleAddToCart}
+          className="px-6 py-2 cursor-pointer rounded-md text-[var(--primary-color)] font-bold border border-[var(--primary-color)] hover:bg-[var(--primary-color)] hover:text-white transition-all duration-300 ease-in-out"
+        >
           ADD TO CART
         </button>
         <button
