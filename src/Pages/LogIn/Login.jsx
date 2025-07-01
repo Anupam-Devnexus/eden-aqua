@@ -38,7 +38,7 @@ export default function Login({ closePopup }) {
         </form>
 
         <div className="mt-4 flex justify-between text-sm text-[var(--primary-color)]">
-          <button onClick={() => alert("Redirect to forgot password")} className="hover:underline">
+          <button onClick={() => navigate('/forget-password')} className="hover:underline">
             Forgot Password?
           </button>
           <button onClick={() => navigate('/signup')} className="hover:underline">

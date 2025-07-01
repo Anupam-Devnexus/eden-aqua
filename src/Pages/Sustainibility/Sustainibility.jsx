@@ -52,7 +52,7 @@ export default function Sustainibility() {
                 </div>
             </div>
             {/* 67 Final Tests to Guarantee Purity */}
-            <div className="">
+            <div className="w-full flex items-center justify-center">
 
                 <FinalTest />
             </div>

@@ -12,14 +12,19 @@ export default function FinalTest() {
   ];
 
   return (
-    <div className="flex flex-col items-center justify-center gap-10 px-4 sm:px-6 md:px-10 py-12 w-full">
+    <div className="flex flex-col items-center justify-center gap-10 px-4 py-12 w-full">
       <h2 className="font-bold text-3xl sm:text-4xl md:text-5xl text-center text-[#1C2E3A] leading-tight">
         67 Final Tests to Guarantee Purity
       </h2>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-24 w-full max-w-7xl">
+      <div className="flex flex-wrap justify-center gap-12 px-8 w-full max-w-7xl">
         {data.map((item, index) => (
-          <SustainCard text={item} key={index} />
+          <div
+            key={index}
+            className="flex-1 min-w-[280px] max-w-[360px]"
+          >
+            <SustainCard text={item} />
+          </div>
         ))}
       </div>
     </div>

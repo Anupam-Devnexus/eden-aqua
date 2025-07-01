@@ -11,6 +11,7 @@ import Subscribe from "./Pages/SubscribeAndSave/Sas";
 import Cart from "./Pages/Cart/Cart";
 import Signup from './Pages/Signup/Signup';
 import Login from './Pages/LogIn/Login';
+import ForgetPassword from './Pages/ForgetPassword/ForgetPassword';
 function App() {
   return (
     <Router>
@@ -29,6 +30,8 @@ function App() {
           <Route path ="/cart" element ={<Cart/>}/>
           <Route path ="/signup" element ={<Signup/>}/>
           <Route path ="/login" element ={<Login/>}/>
+          <Route path ="/forget-password" element ={<ForgetPassword/>}/>
+
 
 
 
