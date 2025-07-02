@@ -8,7 +8,7 @@ export default function Shop() {
   return (
     <>
       {/* Hero Section */}
-      <div className="relative h-[82vh] w-full">
+      <div className="relative h-[90vh] w-full">
         {/* Background Image */}
         <div
           className="absolute inset-0 bg-cover bg-center"

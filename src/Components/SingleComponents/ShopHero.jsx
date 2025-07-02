@@ -4,7 +4,7 @@ export default function ShopHero() {
   const navigate = useNavigate()
   return (
     <div
-      className="h-[82vh] w-full bg-cover bg-center flex items-center justify-start px-6"
+      className="h-[90vh] w-full bg-cover bg-center flex items-center justify-start px-6"
       style={{
         backgroundImage:
           "url('https://res.cloudinary.com/dt4ohfuwc/image/upload/v1750828021/image_28_2_lldrqf.png')",

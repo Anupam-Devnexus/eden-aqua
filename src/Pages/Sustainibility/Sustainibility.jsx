@@ -12,7 +12,7 @@ export default function Sustainibility() {
         >
             {/* Breadcrumb */}
             <div className="text-sm font-bold text-[#0077B6] px-6 mb-6">
-                <span className="text-black">HOME :</span> Sustainibility
+                <span className="text-black">HOME :</span> SUSTAINBILITY
             </div>
 
             {/* Heading */}

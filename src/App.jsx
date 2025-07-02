@@ -24,7 +24,7 @@ function App() {
       <Suspense fallback={<div className="text-center py-10">Loading...</div>}>
         {/* Navigation Bar */}
         <NavigationAll />
-   <Toaster position="top-right" />
+        <Toaster position="top-right" />
         {/* Main Content */}
         <main className="min-h-screen pt-[5.9rem]">
           <Routes>

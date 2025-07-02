@@ -45,7 +45,7 @@ export default function Wtb() {
     <div className="w-full bg-[#F0FAFA] min-h-screen relative pt-20 px-4 pb-12">
       {/* Breadcrumb */}
       <div className="absolute top-4 left-4 sm:left-8 text-sm font-semibold text-black bg-opacity-30 px-3 py-1">
-        Home : <span className="text-[#0077B6]">WHERE TO BUY</span>
+        HOME : <span className="text-[#0077B6]">WHERE TO BUY</span>
       </div>
 
       {/* Heading */}

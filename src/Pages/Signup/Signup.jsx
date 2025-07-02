@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-
+import toast from "react-hot-toast";
 export default function Signup({ closePopup }) {
   const navigate = useNavigate();
 
@@ -47,20 +47,55 @@ export default function Signup({ closePopup }) {
     return newErrors;
   };
 
-  const handleSubmit = (e) => {
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const validationErrors = validate();
+
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
     } else if (!termsAccepted) {
-      alert("You must accept the Terms and Conditions to proceed.");
+      toast.error("You must accept the Terms and Conditions to proceed.");
     } else {
       setErrors({});
-      console.log("Form submitted ✅", form);
-      alert("Registration successful!");
-      closePopup?.();
+      const payload = {
+        Name: form.name,
+        Phone: form.phone,
+        Email: form.email,
+        Password: form.password,
+      };
+
+      console.log("Submitting form data:", payload);
+
+      const toastId = toast.loading("Registering...");
+
+      try {
+        const res = await fetch("https://edenaqua-production.up.railway.app/user/signup", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(payload),
+        });
+
+        if (!res.ok) {
+          const data = await res.json();
+          throw new Error(data.message || "Registration failed. Try again.");
+        }
+
+        const responseData = await res.json();
+        console.log("Registration success:", responseData);
+        toast.success("Registration successful!", { id: toastId });
+        closePopup?.();
+        navigate("/");
+      } catch (err) {
+        console.error("Registration error:", err.message);
+        toast.error(err.message, { id: toastId });
+      }
     }
   };
+
+
 
   return (
     <div
@@ -78,10 +113,10 @@ export default function Signup({ closePopup }) {
       {/* Form Container */}
       <div className="relative bg-white bg-opacity-90 rounded-xl shadow-xl max-w-[90%] w-full p-2 px-6 sm:p-12 z-10 mx-2 sm:mx-6 md:mx-auto">
         {/* Close Button */}
-      
+
 
         <h2 className=" text-lg sm:text-3xl font-bold mb-1 text-center   text-[var(--primary-color)]">
-          Create Account 
+          Create Account
         </h2>
 
         <form
@@ -216,10 +251,9 @@ export default function Signup({ closePopup }) {
             type="submit"
             disabled={!termsAccepted}
             className={`sm:col-span-2 mt-4 py-3 rounded-md font-semibold text-white transition
-              ${
-                termsAccepted
-                  ? "bg-[var(--primary-color)] hover:bg-[var(--fifth-color)] cursor-pointer"
-                  : "bg-gray-400 cursor-not-allowed"
+              ${termsAccepted
+                ? "bg-[var(--primary-color)] hover:bg-[var(--fifth-color)] cursor-pointer"
+                : "bg-gray-400 cursor-not-allowed"
               }
             `}
           >
