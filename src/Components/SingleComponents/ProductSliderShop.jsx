@@ -1,56 +1,64 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { MdNavigateNext, MdOutlineNavigateBefore } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
-import data from "../../assets/ProductDetails.json";
 import useProductStore from "../../Zustand/ProductStore";
 import toast from "react-hot-toast";
+import getProductStore from "../../Zustand/GetProduct";
 
 export default function ProductSliderShop() {
+  const { productlist = [], fetchProducts } = getProductStore();
   const navigate = useNavigate();
   const [activeIndex, setActiveIndex] = useState(0);
-
   const { addProduct } = useProductStore();
 
+  useEffect(() => {
+    fetchProducts();
+  }, []);
+console.log("Product List:", productlist);
   const rotateLeft = () => {
-    setActiveIndex((prev) => (prev - 1 + data.length) % data.length);
+    setActiveIndex((prev) => (prev - 1 + productlist.length) % productlist.length);
   };
 
   const rotateRight = () => {
-    setActiveIndex((prev) => (prev + 1) % data.length);
+    setActiveIndex((prev) => (prev + 1) % productlist.length);
   };
 
   const getVisibleItems = () => {
     const visible = [];
-    const length = data.length;
+    const length = productlist.length;
     for (let i = -2; i <= 2; i++) {
-      visible.push(data[(activeIndex + i + length) % length]);
+      visible.push(productlist[(activeIndex + i + length) % length]);
     }
     return visible;
   };
 
-  // Add to cart handler
   const handleAddToCart = () => {
-    const product = data[activeIndex];
+    const product = productlist[activeIndex];
+    if (!product) return;
 
     const productData = {
-      id: product.id || Date.now(), // use existing id or fallback
-      name: product.name,
-      price: product.price,
-      quantity: 1, // default 1 case
-      caseQuantity: product.caseQuantity || 1,
-      totalBottles: product.caseQuantity || 1,
+      id: product._id || Date.now(),
+      name: product.Name,
+      price: product.Price,
+      quantity: 1,
+      caseQuantity: product.BottbottlesPerCase || 1,
+      totalBottles: product.BottbottlesPerCase || 1,
       totalPrice: (
-        product.price *
+        product.Price *
         1 *
-        (product.caseQuantity || 1)
+        (product.BottbottlesPerCase || 1)
       ).toFixed(2),
-      image: product.image,
-      size: product.size,
+      image: product.Sub_Images?.[0],
+      size: product.Capacity,
     };
 
     addProduct(productData);
-    toast.success(`${product.name} added to cart!`);
+    toast.success(`${product.Name} added to cart!`);
   };
+
+  if (!productlist.length) {
+    return <div className="text-center py-12">Loading products...</div>;
+  }
 
   return (
     <div
@@ -76,40 +84,41 @@ export default function ProductSliderShop() {
         <div className="hidden md:flex gap-6 items-center justify-center w-full transition-all duration-700 ease-in-out">
           {getVisibleItems().map((item, idx) => (
             <div
-              key={idx}
-              className={`flex flex-col items-center text-center p-4 rounded-md  transition-transform duration-700 ease-in-out transform
-              ${
-                idx === 2
+              key={item._id}
+              className={`flex flex-col items-center text-center p-4 rounded-md transition-transform duration-700 ease-in-out transform
+                ${idx === 2
                   ? "scale-[1.15] opacity-100 translate-y-0 z-10"
                   : idx === 1 || idx === 3
                   ? "scale-100 opacity-70 translate-y-2 z-0"
                   : "scale-90 opacity-50 translate-y-4 z-0"
-              }
+                }
               `}
             >
               <img
-                src={item.image}
-                alt={item.name}
+                src={item.Sub_Images?.[0]}
+                alt={item.Name}
                 className="w-32 h-auto mb-4 transition-transform duration-700 ease-in-out hover:scale-105"
               />
-              <h2 className="text-sm text-[var(--primary-color)]">{item.name}</h2>
-              <p className="text-lg font-bold text-gray-600">{item.size}</p>
+              <h2 className="text-sm text-[var(--primary-color)]">{item.Name}</h2>
+              <p className="text-lg font-bold text-gray-600">{item.Capacity}</p>
             </div>
           ))}
         </div>
 
         {/* Mobile View */}
         <div className="md:hidden flex items-center justify-center w-full transition-all duration-700 ease-in-out">
-          <div className="flex flex-col items-center text-center p-4 rounded-md  transition-all duration-700 ease-in-out scale-100 animate-fade-in">
+          <div className="flex flex-col items-center text-center p-4 rounded-md transition-all duration-700 ease-in-out scale-100 animate-fade-in">
             <img
-              src={data[activeIndex].image}
-              alt={data[activeIndex].name}
+              src={productlist[activeIndex]?.Sub_Images?.[0]}
+              alt={productlist[activeIndex]?.Name}
               className="w-32 h-auto mb-4 transition-transform duration-500 hover:scale-105"
             />
             <h2 className="font-bold text-lg text-[var(--primary-color)]">
-              {data[activeIndex].name}
+              {productlist[activeIndex]?.Name}
             </h2>
-            <p className="text-sm text-gray-600">{data[activeIndex].size}</p>
+            <p className="text-sm text-gray-600">
+              {productlist[activeIndex]?.Capacity}
+            </p>
           </div>
         </div>
 

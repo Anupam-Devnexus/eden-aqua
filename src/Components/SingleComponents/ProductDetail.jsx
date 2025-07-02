@@ -1,84 +1,114 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSwipeable } from "react-swipeable";
 import { MdNavigateNext, MdNavigateBefore } from "react-icons/md";
 import { FaMinus, FaPlus } from "react-icons/fa";
-import data from "../../assets/ProductDetails.json";
 import useProductStore from "../../Zustand/ProductStore";
 import toast from "react-hot-toast";
+import getProductStore from "../../Zustand/GetProduct";
 
 export default function ProductDetails() {
   const [productIndex, setProductIndex] = useState(0);
+  const [imageIndex, setImageIndex] = useState(0);
   const [caseCount, setCaseCount] = useState(1);
-  const product = data[productIndex];
 
+  const { productlist = [], fetchProducts } = getProductStore();
   const { addProduct } = useProductStore();
 
-  const nextProduct = () => {
-    setProductIndex((prev) => (prev + 1) % data.length);
-    setCaseCount(1);
-  };
+  useEffect(() => {
+    fetchProducts();
+  }, []);
 
-  const prevProduct = () => {
-    setProductIndex((prev) => (prev - 1 + data.length) % data.length);
+  const product = productlist[productIndex];
+
+  // Update images when product changes
+  useEffect(() => {
+    setImageIndex(0);
     setCaseCount(1);
-  };
+  }, [productIndex]);
 
   const handleProductChange = (e) => {
     setProductIndex(Number(e.target.value));
-    setCaseCount(1);
+  };
+
+  const nextImage = () => {
+    setImageIndex((prev) => (prev + 1) % (product?.Sub_Images?.length || 1));
+  };
+
+  const prevImage = () => {
+    setImageIndex((prev) =>
+      (prev - 1 + (product?.Sub_Images?.length || 1)) %
+      (product?.Sub_Images?.length || 1)
+    );
   };
 
   const handleIncrease = () => setCaseCount((prev) => prev + 1);
   const handleDecrease = () => setCaseCount((prev) => (prev > 1 ? prev - 1 : 1));
 
   const swipeHandlers = useSwipeable({
-    onSwipedLeft: nextProduct,
-    onSwipedRight: prevProduct,
+    onSwipedLeft: nextImage,
+    onSwipedRight: prevImage,
     preventDefaultTouchmoveEvent: true,
     trackMouse: true,
   });
 
   const handleAddToCart = () => {
+    if (!product) return;
+
     const productData = {
-      id: product.id || Date.now(),
-      name: product.name,
-      price: product.price,
+      id: product._id || Date.now(),
+      name: product.Name,
+      price: product.Price,
       quantity: caseCount,
-      caseQuantity: product.caseQuantity || 1,
-      totalBottles: caseCount * (product.caseQuantity || 1),
-      totalPrice: (product.price * caseCount).toFixed(2),
-      image: product.image,
-      size: product.size,
+      caseQuantity: product.BottbottlesPerCase || 1,
+      totalBottles: caseCount * (product.BottbottlesPerCase || 1),
+      totalPrice: (product.Price * caseCount).toFixed(2),
+      image: product.Sub_Images?.[0],
+      size: product.Capacity,
     };
 
     addProduct(productData);
-    toast.success(`${product.name} (${caseCount} case${caseCount > 1 ? 's' : ''}) added to cart!`);
+    toast.success(`${product.Name} (${caseCount} case${caseCount > 1 ? 's' : ''}) added to cart!`);
   };
+
+  if (!productlist.length) {
+    return <div className="text-center py-20 text-lg text-gray-500">Loading product details...</div>;
+  }
 
   return (
     <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 grid grid-cols-1 md:grid-cols-2 gap-8">
-      {/* Image Section */}
+      {/* Image Slider Section */}
       <div className="flex flex-col items-center gap-4">
         <div {...swipeHandlers} className="relative w-full flex items-center justify-center">
           <button
-            onClick={prevProduct}
+            onClick={prevImage}
             className="absolute cursor-pointer left-2 z-10 text-3xl text-[var(--primary-color)]"
           >
             <MdNavigateBefore />
           </button>
           <img
-            src={product.image}
-            alt={product.name}
+            src={product?.Sub_Images?.[imageIndex] || "https://via.placeholder.com/250"}
+            alt={product?.Name}
             className="w-60 h-80 object-contain transition duration-300 ease-in-out"
           />
           <button
-            onClick={nextProduct}
+            onClick={nextImage}
             className="absolute cursor-pointer right-2 z-10 text-3xl text-[var(--primary-color)]"
           >
             <MdNavigateNext />
           </button>
         </div>
-        <span className="text-sm text-gray-500 text-center">{product.name}</span>
+        <span className="text-sm text-gray-500 text-center">{product?.Name}</span>
+        <div className="flex gap-2 mt-2">
+          {product?.Sub_Images?.map((img, idx) => (
+            <img
+              key={idx}
+              src={img}
+              alt={`thumb-${idx}`}
+              className={`w-10 h-10 object-cover border rounded cursor-pointer ${imageIndex === idx ? 'border-[var(--primary-color)]' : 'border-gray-300'}`}
+              onClick={() => setImageIndex(idx)}
+            />
+          ))}
+        </div>
       </div>
 
       {/* Details Section */}
@@ -93,9 +123,9 @@ export default function ProductDetails() {
             value={productIndex}
             className="px-4 py-2 rounded-md border border-gray-300 text-sm text-gray-800 shadow-sm bg-white focus:outline-none focus:ring-2 focus:ring-[var(--fifth-color)]"
           >
-            {data.map((item, index) => (
-              <option key={index} value={index}>
-                {item.name} — {item.size} — {item.caseQuantity} Bottles
+            {productlist.map((item, index) => (
+              <option key={item._id} value={index}>
+                {item.Name} — {item.Capacity} — {item.BottbottlesPerCase} Bottles
               </option>
             ))}
           </select>
@@ -110,9 +140,7 @@ export default function ProductDetails() {
             className="px-4 py-2 rounded-md border border-gray-300 text-sm text-gray-800 shadow-sm bg-white focus:outline-none focus:ring-2 focus:ring-[var(--fifth-color)]"
             defaultValue=""
           >
-            <option disabled value="">
-              Select frequency
-            </option>
+            <option disabled value="">Select frequency</option>
             <option value="one-time">One Time</option>
             <option value="weekly">Weekly</option>
             <option value="bi-weekly">Bi-Weekly</option>
@@ -120,21 +148,21 @@ export default function ProductDetails() {
           </select>
         </div>
 
-        {/* Pricing */}
+        {/* Pricing Info */}
         <div className="text-sm">
           <p className="text-gray-600 mb-1">
             Price per Bottle:{" "}
-            <span className="font-semibold">${product.price.toFixed(2)}</span>
+            <span className="font-semibold">${product?.Price?.toFixed(2)}</span>
           </p>
           <p className="text-lg font-bold text-[var(--fifth-color)]">
-            TOTAL: ${(product.price * caseCount * (product.caseQuantity || 1)).toFixed(2)}
+            TOTAL: ${(product?.Price * caseCount * (product?.BottbottlesPerCase || 1)).toFixed(2)}
           </p>
           <p className="text-xs text-gray-500">
-            ({caseCount * (product.caseQuantity || 1)} Bottles in total)
+            ({caseCount * (product?.BottbottlesPerCase || 1)} Bottles in total)
           </p>
         </div>
 
-        {/* Quantity & Add to Cart */}
+        {/* Quantity Selector + Add to Cart */}
         <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 mt-2">
           <div className="flex items-center gap-3 rounded-xl border border-gray-300 px-4 py-2 shadow-sm bg-white transition-all duration-200 hover:shadow-md">
             <button

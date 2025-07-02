@@ -1,11 +1,18 @@
-import React from "react";
+import React, { useEffect } from "react";
 import ShopHero from "../../Components/SingleComponents/ShopHero";
 import FourGroup from "../../Components/SingleComponents/FourGroup";
 import ProductSliderShop from "../../Components/SingleComponents/ProductSliderShop";
-import { Helmet } from "react-helmet";
 import NewsLetter from "../../Components/SingleComponents/NewsLetter";
 import { useNavigate } from "react-router-dom";
+import  getProductStore  from '../../Zustand/GetProduct'
 export default function Shop() {
+    const { productlist, fetchProducts } = getProductStore();
+
+
+    useEffect(() => {
+        fetchProducts();
+    }, []);
+    // console.log("productlist", productlist);
     const navigate = useNavigate()
     const data = [
         {
@@ -38,16 +45,13 @@ export default function Shop() {
 
     return (
         <>
-            <Helmet>
-                <title>Shop | Eden Aqua</title>
-                <meta name="description" content="Shop Earth's finest water. Discover premium hydration with Eden Aqua's eco-friendly, naturally sourced water." />
-            </Helmet>
+          
 
             <main className="flex flex-col">
                 <ShopHero />
                 <div className="flex mx-auto px-6 items-center justify-center w-full">
 
-                <FourGroup data={data} />
+                    <FourGroup data={data} />
                 </div>
 
                 {/* About Section */}
@@ -72,8 +76,8 @@ export default function Shop() {
                             It’s not just water — it’s Eden Aqua.
                         </p>
                         <button
-                        onClick={()=> navigate('/about')}
-                         className="px-6 py-2 cursor-pointer bg-[var(--fourth-color)] rounded-sm font-semibold hover:opacity-90 transition focus:outline-none focus-visible:ring-2 focus-visible:ring-white">
+                            onClick={() => navigate('/about')}
+                            className="px-6 py-2 cursor-pointer bg-[var(--fourth-color)] rounded-sm font-semibold hover:opacity-90 transition focus:outline-none focus-visible:ring-2 focus-visible:ring-white">
                             View More
                         </button>
                     </div>
@@ -186,8 +190,8 @@ export default function Shop() {
                         ))}
 
                         <button
-                        onClick={() => navigate('/subscribe')}
-                        className="bg-white cursor-pointer text-[var(--primary-color)] px-6 py-3 mt-4 rounded-md text-lg font-semibold tracking-wide shadow-md w-fit hover:bg-opacity-90 transition">
+                            onClick={() => navigate('/subscribe')}
+                            className="bg-white cursor-pointer text-[var(--primary-color)] px-6 py-3 mt-4 rounded-md text-lg font-semibold tracking-wide shadow-md w-fit hover:bg-opacity-90 transition">
                             SUBSCRIBE NOW
                         </button>
                     </div>

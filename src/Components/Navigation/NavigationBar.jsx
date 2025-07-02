@@ -27,7 +27,7 @@ useEffect(() => {
   // Run initially
   checkToken();
 
-  // ✅ Listen for manual token changes
+  //  Listen for manual token changes
   window.addEventListener("storage", checkToken);
 
   return () => {

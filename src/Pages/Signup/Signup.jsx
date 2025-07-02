@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
+
 export default function Signup({ closePopup }) {
   const navigate = useNavigate();
 
@@ -18,6 +19,14 @@ export default function Signup({ closePopup }) {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
+
+    if (errors[name]) {
+      setErrors((prev) => {
+        const newErrors = { ...prev };
+        delete newErrors[name];
+        return newErrors;
+      });
+    }
   };
 
   const handleTermsChange = (e) => {
@@ -47,55 +56,59 @@ export default function Signup({ closePopup }) {
     return newErrors;
   };
 
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     const validationErrors = validate();
 
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
-    } else if (!termsAccepted) {
+      return;
+    }
+
+    if (!termsAccepted) {
       toast.error("You must accept the Terms and Conditions to proceed.");
-    } else {
-      setErrors({});
-      const payload = {
-        Name: form.name,
-        Phone: form.phone,
-        Email: form.email,
-        Password: form.password,
-      };
+      return;
+    }
 
-      console.log("Submitting form data:", payload);
+    setErrors({});
 
-      const toastId = toast.loading("Registering...");
+    const payload = {
+      Name: form.name,
+      Phone: form.phone,
+      Email: form.email,
+      Password: form.password,
+    };
 
-      try {
-        const res = await fetch("https://edenaqua-production.up.railway.app/user/signup", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(payload),
-        });
+    const toastId = toast.loading("Registering...");
 
-        if (!res.ok) {
-          const data = await res.json();
-          throw new Error(data.message || "Registration failed. Try again.");
-        }
+    try {
+      const res = await fetch("https://edenaqua-production.up.railway.app/user/signup", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
 
-        const responseData = await res.json();
-        console.log("Registration success:", responseData);
-        toast.success("Registration successful!", { id: toastId });
-        closePopup?.();
-        navigate("/");
-      } catch (err) {
-        console.error("Registration error:", err.message);
-        toast.error(err.message, { id: toastId });
+      if (!res.ok) {
+        const data = await res.json();
+        throw new Error(data.message || "Registration failed. Try again.");
       }
+
+      const responseData = await res.json();
+      toast.success("Registration successful!", { id: toastId });
+
+      // Clear form (optional)
+      setForm({ name: "", phone: "", email: "", password: "", confirmPassword: "" });
+      setTermsAccepted(false);
+
+      closePopup?.();
+      navigate("/");
+    } catch (err) {
+      console.error("Registration error:", err.message);
+      toast.error(err.message, { id: toastId });
     }
   };
-
-
 
   return (
     <div
@@ -107,15 +120,10 @@ export default function Signup({ closePopup }) {
         backgroundPosition: "center",
       }}
     >
-      {/* Overlay */}
       <div className="absolute inset-0 bg-black opacity-60"></div>
 
-      {/* Form Container */}
       <div className="relative bg-white bg-opacity-90 rounded-xl shadow-xl max-w-[90%] w-full p-2 px-6 sm:p-12 z-10 mx-2 sm:mx-6 md:mx-auto">
-        {/* Close Button */}
-
-
-        <h2 className=" text-lg sm:text-3xl font-bold mb-1 text-center   text-[var(--primary-color)]">
+        <h2 className="text-lg sm:text-3xl font-bold mb-1 text-center text-[var(--primary-color)]">
           Create Account
         </h2>
 
@@ -135,11 +143,17 @@ export default function Signup({ closePopup }) {
               name="name"
               value={form.name}
               onChange={handleChange}
-              className="px-4 py-3 border rounded-md focus:ring-2 focus:outline-none focus:ring-[var(--primary-color)]"
+              className={`px-4 py-3 border rounded-md focus:ring-2 focus:outline-none focus:ring-[var(--primary-color)] ${
+                errors.name ? "border-red-500" : ""
+              }`}
               placeholder="Your full name"
+              aria-invalid={!!errors.name}
+              aria-describedby="error-name"
             />
             {errors.name && (
-              <p className="text-red-500 text-sm mt-1">{errors.name}</p>
+              <p id="error-name" className="text-red-500 text-sm mt-1">
+                {errors.name}
+              </p>
             )}
           </div>
 
@@ -154,12 +168,18 @@ export default function Signup({ closePopup }) {
               name="phone"
               value={form.phone}
               onChange={handleChange}
-              className="px-4 py-3 border rounded-md focus:ring-2 focus:outline-none focus:ring-[var(--primary-color)]"
+              className={`px-4 py-3 border rounded-md focus:ring-2 focus:outline-none focus:ring-[var(--primary-color)] ${
+                errors.phone ? "border-red-500" : ""
+              }`}
               placeholder="10-digit phone number"
               maxLength={10}
+              aria-invalid={!!errors.phone}
+              aria-describedby="error-phone"
             />
             {errors.phone && (
-              <p className="text-red-500 text-sm mt-1">{errors.phone}</p>
+              <p id="error-phone" className="text-red-500 text-sm mt-1">
+                {errors.phone}
+              </p>
             )}
           </div>
 
@@ -174,20 +194,23 @@ export default function Signup({ closePopup }) {
               name="email"
               value={form.email}
               onChange={handleChange}
-              className="px-4 py-3 border rounded-md focus:ring-2 focus:outline-none focus:ring-[var(--primary-color)]"
+              className={`px-4 py-3 border rounded-md focus:ring-2 focus:outline-none focus:ring-[var(--primary-color)] ${
+                errors.email ? "border-red-500" : ""
+              }`}
               placeholder="example@mail.com"
+              aria-invalid={!!errors.email}
+              aria-describedby="error-email"
             />
             {errors.email && (
-              <p className="text-red-500 text-sm mt-1">{errors.email}</p>
+              <p id="error-email" className="text-red-500 text-sm mt-1">
+                {errors.email}
+              </p>
             )}
           </div>
 
           {/* Password */}
           <div className="flex flex-col">
-            <label
-              htmlFor="password"
-              className="mb-1 font-medium text-gray-700"
-            >
+            <label htmlFor="password" className="mb-1 font-medium text-gray-700">
               Password
             </label>
             <input
@@ -196,11 +219,17 @@ export default function Signup({ closePopup }) {
               name="password"
               value={form.password}
               onChange={handleChange}
-              className="px-4 py-3 border rounded-md focus:ring-2 focus:outline-none focus:ring-[var(--primary-color)]"
+              className={`px-4 py-3 border rounded-md focus:ring-2 focus:outline-none focus:ring-[var(--primary-color)] ${
+                errors.password ? "border-red-500" : ""
+              }`}
               placeholder="At least 6 characters"
+              aria-invalid={!!errors.password}
+              aria-describedby="error-password"
             />
             {errors.password && (
-              <p className="text-red-500 text-sm mt-1">{errors.password}</p>
+              <p id="error-password" className="text-red-500 text-sm mt-1">
+                {errors.password}
+              </p>
             )}
           </div>
 
@@ -218,11 +247,17 @@ export default function Signup({ closePopup }) {
               name="confirmPassword"
               value={form.confirmPassword}
               onChange={handleChange}
-              className="px-4 py-3 border rounded-md focus:ring-2 focus:outline-none focus:ring-[var(--primary-color)]"
+              className={`px-4 py-3 border rounded-md focus:ring-2 focus:outline-none focus:ring-[var(--primary-color)] ${
+                errors.confirmPassword ? "border-red-500" : ""
+              }`}
               placeholder="Re-enter your password"
+              aria-invalid={!!errors.confirmPassword}
+              aria-describedby="error-confirmPassword"
             />
             {errors.confirmPassword && (
-              <p className="text-red-500 text-sm mt-1">{errors.confirmPassword}</p>
+              <p id="error-confirmPassword" className="text-red-500 text-sm mt-1">
+                {errors.confirmPassword}
+              </p>
             )}
           </div>
 
@@ -234,13 +269,19 @@ export default function Signup({ closePopup }) {
               checked={termsAccepted}
               onChange={handleTermsChange}
               className="w-5 h-5 accent-[var(--primary-color)] cursor-pointer"
+              aria-describedby="error-terms"
             />
             <label
               htmlFor="terms"
               className="text-gray-700 select-none cursor-pointer"
             >
               I accept the{" "}
-              <a href="/terms" target="_blank" rel="noopener noreferrer" className="underline text-[var(--primary-color)]">
+              <a
+                href="/terms"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="underline text-[var(--primary-color)]"
+              >
                 Terms and Conditions
               </a>
             </label>
@@ -276,7 +317,9 @@ export default function Signup({ closePopup }) {
               onClick={() => navigate("/login")}
               tabIndex={0}
               role="button"
-              onKeyDown={(e) => { if (e.key === 'Enter') navigate("/login"); }}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") navigate("/login");
+              }}
             >
               Log In
             </span>
