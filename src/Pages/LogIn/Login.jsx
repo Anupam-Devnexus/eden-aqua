@@ -30,11 +30,16 @@ export default function Login() {
         Password: form.password
       });
 
-      if (res.data.success && res.data.accessToken) {
-        toast.success("Login successful!");
-        localStorage.setItem("authToken", res.data.accessToken);
-        navigate("/");
-      } else {
+    if (res.data.success && res.data.accessToken) {
+  toast.success("Login successful!");
+  localStorage.setItem("authToken", res.data.accessToken);
+
+  // ✅ Manually trigger a storage event
+  window.dispatchEvent(new Event("storage"));
+
+  navigate("/");
+}
+else {
         toast.error(res.data.message || "Invalid credentials!");
       }
     } catch (error) {

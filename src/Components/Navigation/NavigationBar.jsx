@@ -1,11 +1,13 @@
-import React, { useState } from "react";
-import { FaUser, FaShoppingCart } from "react-icons/fa";
+import React, { useEffect, useState } from "react";
+import { FaUser, FaShoppingCart, FaPowerOff } from "react-icons/fa";
 import { CiMenuFries } from "react-icons/ci";
 import { RxCross1 } from "react-icons/rx";
 import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
 export default function NavigationBar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const navigate = useNavigate();
 
   const navigationData = [
@@ -16,8 +18,35 @@ export default function NavigationBar() {
     { name: "WHERE TO BUY", path: "/wheretobuy" },
   ];
 
+useEffect(() => {
+  const checkToken = () => {
+    const token = localStorage.getItem("authToken") || localStorage.getItem("accessToken");
+    setIsLoggedIn(!!token);
+  };
+
+  // Run initially
+  checkToken();
+
+  // ✅ Listen for manual token changes
+  window.addEventListener("storage", checkToken);
+
+  return () => {
+    window.removeEventListener("storage", checkToken);
+  };
+}, []);
+
+
+
+  const handleLogout = () => {
+    localStorage.removeItem("authToken");
+    toast.success("Logged out successfully!");
+    setIsLoggedIn(false);
+    navigate("/");
+  };
+
   return (
     <>
+      {/* Top Navigation Bar */}
       <nav className="bg-[var(--primary-color)] text-white flex items-center justify-between h-16 w-full px-4 sm:px-6 lg:px-12 sticky top-0 z-50">
         {/* Logo */}
         <img
@@ -41,29 +70,36 @@ export default function NavigationBar() {
         </ul>
 
         {/* Mobile Menu Toggle */}
-        <div
-          className="text-2xl flex items-center gap-2 lg:hidden cursor-pointer"
-         
-        >
-           <FaShoppingCart className="cursor-pointer" onClick={() => navigate("/cart")} />
-        <span  onClick={() => setIsMenuOpen(!isMenuOpen)}>
-          {isMenuOpen ? <RxCross1 /> : <CiMenuFries />}
-          </span>  
+        <div className="text-2xl flex items-center gap-2 lg:hidden cursor-pointer">
+          <FaShoppingCart className="cursor-pointer" onClick={() => navigate("/cart")} />
+          <span onClick={() => setIsMenuOpen(!isMenuOpen)}>
+            {isMenuOpen ? <RxCross1 /> : <CiMenuFries />}
+          </span>
         </div>
 
         {/* Desktop Icons */}
-        <div className="hidden lg:flex items-center gap-4 h-full px-4 bg-[var(--secondary-color)]">
-          <FaUser className="cursor-pointer" onClick={() => navigate("/login")} />
+        <div className="hidden lg:flex items-center gap-4 h-full px-4 bg-[var(--secondary-color)] rounded">
+          <FaUser className="cursor-pointer" onClick={() => navigate("/user-profile")} />
           <div className="w-px h-4 bg-white" />
           <FaShoppingCart className="cursor-pointer" onClick={() => navigate("/cart")} />
+          <div className="w-px h-4 bg-white" />
+          {!isLoggedIn ? (
+            <button
+              onClick={() => navigate("/login")}
+              className="text-sm font-semibold hover:underline"
+            >
+              Login / Sign Up
+            </button>
+          ) : (
+            <FaPowerOff className="cursor-pointer" onClick={handleLogout} />
+          )}
         </div>
       </nav>
 
       {/* Mobile Dropdown Menu */}
       <div
-        className={`lg:hidden transition-all duration-300 origin-top ${
-          isMenuOpen ? "scale-y-100 opacity-100" : "scale-y-0 opacity-0 pointer-events-none"
-        } bg-[var(--primary-color)] text-white flex flex-col gap-4 px-6 py-4 text-[15px] font-semibold tracking-[2px] shadow-md`}
+        className={`lg:hidden transition-all duration-300 origin-top ${isMenuOpen ? "scale-y-100 opacity-100" : "scale-y-0 opacity-0 pointer-events-none"
+          } bg-[var(--primary-color)] text-white flex flex-col gap-4 px-6 py-4 text-[15px] font-semibold tracking-[2px] shadow-md`}
       >
         {navigationData.map(({ name, path }, index) => (
           <div
@@ -84,10 +120,10 @@ export default function NavigationBar() {
             className="cursor-pointer"
             onClick={() => {
               setIsMenuOpen(false);
-              navigate("/login");
+              navigate("/user-profile");
             }}
           />
-          <div className="w-px h-4 bg-white hidden" />
+          {/* <div className="w-px h-4 bg-white" /> */}
           <FaShoppingCart
             className="cursor-pointer hidden"
             onClick={() => {
@@ -95,6 +131,26 @@ export default function NavigationBar() {
               navigate("/cart");
             }}
           />
+          <div className="w-px h-4 bg-white" />
+          {!isLoggedIn ? (
+            <button
+              className="text-sm font-semibold hover:underline"
+              onClick={() => {
+                setIsMenuOpen(false);
+                navigate("/login");
+              }}
+            >
+              Login / Sign Up
+            </button>
+          ) : (
+            <FaPowerOff
+              className="cursor-pointer"
+              onClick={() => {
+                setIsMenuOpen(false);
+                handleLogout();
+              }}
+            />
+          )}
         </div>
       </div>
     </>
