@@ -95,7 +95,7 @@ console.log("Product List:", productlist);
               `}
             >
               <img
-                src={item.Sub_Images?.[0]}
+                src={item.ProductImage}
                 alt={item.Name}
                 className="w-32 h-auto mb-4 transition-transform duration-700 ease-in-out hover:scale-105"
               />

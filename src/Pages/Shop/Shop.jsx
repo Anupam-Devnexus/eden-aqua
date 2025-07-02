@@ -1,15 +1,19 @@
-import React from "react";
+import React, { useEffect } from "react";
 import ProductCard from "../../Components/Cards/ProductCard";
 import NewsLetter from "../../Components/SingleComponents/NewsLetter";
-import data from "../../assets/ProductDetails.json"
-export default function Shop() {
- 
+import getProductStore from "../../Zustand/GetProduct";
 
+export default function Shop() {
+  const { productlist = [], fetchProducts } = getProductStore();
+
+  useEffect(() => {
+    fetchProducts();
+  }, []);
+console.log("Product List:", productlist);
   return (
     <>
       {/* Hero Section */}
       <div className="relative h-[90vh] w-full">
-        {/* Background Image */}
         <div
           className="absolute inset-0 bg-cover bg-center"
           style={{
@@ -17,18 +21,13 @@ export default function Shop() {
               "url('https://res.cloudinary.com/dt4ohfuwc/image/upload/v1751283158/pexels-paggiarofrancesco-593099_c4xroh.jpg')",
           }}
         >
-          {/* Overlay */}
           <div className="absolute inset-0 bg-black opacity-40" />
         </div>
-
-        {/* Hero Content */}
         <div className="relative z-10 h-full flex items-center justify-start px-6">
-          <div className="w-full md:w-1/2 flex flex-col items-center gap-4 text-center md:text-left">
-            <div className="flex flex-col justify-center gap-4">
-              <span className="text-white font-bold text-3xl sm:text-4xl md:text-5xl leading-tight">
-                Browse & Shop Your Essentials with Ease
-              </span>
-            </div>
+          <div className="w-full md:w-1/2 text-center md:text-left">
+            <h1 className="text-white font-bold text-3xl sm:text-4xl md:text-5xl leading-tight">
+              Browse & Shop Your Essentials with Ease
+            </h1>
           </div>
         </div>
       </div>
@@ -40,19 +39,25 @@ export default function Shop() {
         </h2>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
-          {data.map((item, index) => (
-            <ProductCard
-              key={index}
-              image={item.image}
-              name={`${item.name} (${item.size})`}
-              price={item.price}
-              defaultQuantity={item.quantity}
-              caseQuantity={item.caseQuantity}
-            />
-          ))}
+          {productlist.length === 0 ? (
+            <p className="col-span-full text-center text-gray-500">Loading products...</p>
+          ) : (
+            productlist.map((item) => (
+              <ProductCard
+                key={item._id}
+                id={item._id}
+                image={item.ProductImage}
+                name={`${item.Name} (${item.Capacity})`}
+                price={item.Price}
+               capacity={item.Capacity}
+                caseQuantity={item.BottbottlesPerCase} 
+              />
+            ))
+          )}
         </div>
       </div>
-      <NewsLetter/>
+
+      <NewsLetter />
     </>
   );
 }

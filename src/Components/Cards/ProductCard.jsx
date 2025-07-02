@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import useProductStore from "../../Zustand/ProductStore";
 import toast from "react-hot-toast";
+
 export default function ProductCard({
+  id,
   image,
   name,
   price,
@@ -10,7 +12,6 @@ export default function ProductCard({
   onAddToCart = () => {},
 }) {
   const [quantity, setQuantity] = useState(defaultQuantity);
-
   const { products, addProduct } = useProductStore();
 
   const handleQuantityChange = (e) => {
@@ -22,27 +23,30 @@ export default function ProductCard({
   const decrementQuantity = () => setQuantity((q) => (q > 1 ? q - 1 : 1));
 
   const handleAddToCart = () => {
+    const exists = products.find((product) => product.id === id);
+    if (exists) {
+      toast.error("This product is already in your cart.");
+      return;
+    }
+
     const totalBottles = quantity * caseQuantity;
+    const totalPrice = (price * totalBottles).toFixed(2);
+
     const productData = {
-      id: Date.now(), // or use a better unique ID system
+      id,
       name,
       price,
-      quantity,
+      capacity,
       caseQuantity,
       totalBottles,
-      totalPrice: (price * quantity * caseQuantity).toFixed(2),
+      totalPrice,
       image,
     };
 
-    // Add to Zustand store
     addProduct(productData);
-
-    // Optionally call external callback
     onAddToCart(productData);
-
-    // Show alert and log updated store
-   toast.success(`${name} added to cart!`);
-    console.log("🛒 All Products in Store:", useProductStore.getState().products);
+    toast.success(`${name} added to cart!`);
+    console.log("Store Products:", useProductStore.getState().products);
   };
 
   const formattedPrice = new Intl.NumberFormat("en-US", {
@@ -50,50 +54,42 @@ export default function ProductCard({
     currency: "USD",
   }).format(price);
 
-  const totalPrice = (price * quantity * caseQuantity).toFixed(2);
-  const totalCase = (quantity * caseQuantity).toFixed(2);
-
   return (
-    <div className="max-w-sm w-full border border-gray-200 rounded-2xl shadow-sm hover:shadow-xl transition duration-300 bg-white">
-      {/* Product Image */}
-      <div className="bg-[#F9FBFC] p-4 flex justify-center rounded-2xl items-center h-56">
+    <div className="max-w-sm w-full mx-auto border border-gray-200 rounded-2xl shadow-sm hover:shadow-xl transition bg-white">
+      <div className="bg-[#F9FBFC] p-4 flex justify-center items-center h-56 rounded-2xl">
         <img src={image} alt={name} className="h-full object-contain" loading="lazy" />
       </div>
 
-      {/* Product Info */}
       <div className="p-5 flex flex-col gap-3">
-        <h3 className="text-lg font-semibold text-[var(--primary-color)] leading-snug">{name}</h3>
+        <h3 className="text-lg font-semibold text-[var(--primary-color)]">{name}</h3>
 
-        <div className="flex flex-col items-start gap-2 justify-between">
+        <div className="text-left">
           <p className="text-xl font-bold text-[var(--fifth-color)]">Price: {formattedPrice}</p>
-          <i className="text-xs font-light text-gray-600">Number of Bottles in 1 Case : {caseQuantity}</i>
+          <p className="text-xs text-gray-600 font-light">
+            Bottles per Case: {caseQuantity}
+          </p>
         </div>
 
-        {/* Quantity with increment/decrement buttons */}
         <div className="flex items-center gap-3">
-          <label className="text-sm font-medium text-[var(--sixth-color)] select-none">Case Quantity:</label>
-          <div className="flex items-center justify-center rounded-md overflow-hidden">
+          <label className="text-sm font-medium text-[var(--sixth-color)]">Case Quantity:</label>
+          <div className="flex items-center rounded-md overflow-hidden">
             <button
               type="button"
               onClick={decrementQuantity}
-              className="px-3 py-1 bg-gray-200 text-red-600 cursor-pointer rounded-4xl hover:bg-gray-300 transition text-lg font-bold select-none"
-              aria-label="Decrease quantity"
+              className="px-3 py-1 bg-gray-200 text-red-600 hover:bg-gray-300 text-lg font-bold"
             >
               –
             </button>
             <input
               type="text"
-              min="1"
               value={quantity}
               onChange={handleQuantityChange}
               className="w-14 text-center py-1 focus:outline-none"
-              aria-label="Quantity input"
             />
             <button
               type="button"
               onClick={incrementQuantity}
-              className="px-3 py-1 bg-gray-200 rounded-2xl text-green-800 cursor-pointer hover:bg-gray-300 transition text-lg font-bold select-none"
-              aria-label="Increase quantity"
+              className="px-3 py-1 bg-gray-200 text-green-800 hover:bg-gray-300 text-lg font-bold"
             >
               +
             </button>
@@ -101,13 +97,13 @@ export default function ProductCard({
         </div>
 
         <div className="text-[var(--fifth-color)] font-semibold text-base">
-          Total Price: <span className="text-xl">${totalPrice}</span>
-          <p className="text-xs text-gray-500">({totalCase} Bottles in total)</p>
+          Total: <span className="text-xl">${(price * quantity * caseQuantity).toFixed(2)}</span>
+          <p className="text-xs text-gray-500">({quantity * caseQuantity} bottles)</p>
         </div>
 
         <button
           onClick={handleAddToCart}
-          className="mt-4 bg-[var(--fifth-color)] cursor-pointer hover:bg-[var(--primary-color)] text-white text-sm font-semibold py-2 px-4 rounded-md transition duration-200"
+          className="mt-4 bg-[var(--fifth-color)] hover:bg-[var(--primary-color)] text-white text-sm font-semibold py-2 px-4 rounded-md transition"
         >
           Add to Cart
         </button>
