@@ -7,12 +7,15 @@ export default function ProductCard({
   image,
   name,
   price,
+  capacity,
   caseQuantity,
   defaultQuantity = 1,
   onAddToCart = () => {},
 }) {
   const [quantity, setQuantity] = useState(defaultQuantity);
-  const { products, addProduct } = useProductStore();
+  const { products, addProduct, removeProduct } = useProductStore();
+
+  const isInCart = products.some((product) => product.id === id);
 
   const handleQuantityChange = (e) => {
     const value = Math.max(1, parseInt(e.target.value) || 1);
@@ -23,9 +26,8 @@ export default function ProductCard({
   const decrementQuantity = () => setQuantity((q) => (q > 1 ? q - 1 : 1));
 
   const handleAddToCart = () => {
-    const exists = products.find((product) => product.id === id);
-    if (exists) {
-      toast.error("This product is already in your cart.");
+    if (isInCart) {
+      toast.error("Product already in cart");
       return;
     }
 
@@ -40,13 +42,18 @@ export default function ProductCard({
       caseQuantity,
       totalBottles,
       totalPrice,
+      quantity,
       image,
     };
 
     addProduct(productData);
     onAddToCart(productData);
     toast.success(`${name} added to cart!`);
-    console.log("Store Products:", useProductStore.getState().products);
+  };
+
+  const handleRemoveFromCart = () => {
+    removeProduct(id);
+    toast.success(`${name} removed from cart`);
   };
 
   const formattedPrice = new Intl.NumberFormat("en-US", {
@@ -101,12 +108,21 @@ export default function ProductCard({
           <p className="text-xs text-gray-500">({quantity * caseQuantity} bottles)</p>
         </div>
 
-        <button
-          onClick={handleAddToCart}
-          className="mt-4 bg-[var(--fifth-color)] hover:bg-[var(--primary-color)] text-white text-sm font-semibold py-2 px-4 rounded-md transition"
-        >
-          Add to Cart
-        </button>
+        {isInCart ? (
+          <button
+            onClick={handleRemoveFromCart}
+            className="mt-4 cursor-pointer bg-red-500 hover:bg-red-600 text-white text-sm font-semibold py-2 px-4 rounded-md transition"
+          >
+            Remove from Cart
+          </button>
+        ) : (
+          <button
+            onClick={handleAddToCart}
+            className="mt-4 cursor-pointer bg-[var(--fifth-color)] hover:bg-[var(--primary-color)] text-white text-sm font-semibold py-2 px-4 rounded-md transition"
+          >
+            Add to Cart
+          </button>
+        )}
       </div>
     </div>
   );

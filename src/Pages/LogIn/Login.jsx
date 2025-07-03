@@ -11,7 +11,7 @@ export default function Login() {
   useEffect(() => {
     const token = localStorage.getItem("authToken");
     if (token) {
-      navigate("/"); 
+      navigate("/");
     }
   }, [navigate]);
 
@@ -30,16 +30,16 @@ export default function Login() {
         Password: form.password
       });
 
-    if (res.data.success && res.data.accessToken) {
-  toast.success("Login successful!");
-  localStorage.setItem("authToken", res.data.accessToken);
+      if (res.data.success && res.data.accessToken) {
+        toast.success("Login successful!");
+        localStorage.setItem("authToken", res.data.accessToken);
 
-  // ✅ Manually trigger a storage event
-  window.dispatchEvent(new Event("storage"));
+        // ✅ Manually trigger a storage event
+        window.dispatchEvent(new Event("storage"));
 
-  navigate("/");
-}
-else {
+        navigate("/");
+      }
+      else {
         toast.error(res.data.message || "Invalid credentials!");
       }
     } catch (error) {

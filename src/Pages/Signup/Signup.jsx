@@ -80,6 +80,7 @@ export default function Signup({ closePopup }) {
     };
 
     const toastId = toast.loading("Registering...");
+    console.log("Submitting registration:", payload);
 
     try {
       const res = await fetch("https://edenaqua-production.up.railway.app/user/signup", {
@@ -217,6 +218,7 @@ export default function Signup({ closePopup }) {
               id="password"
               type="password"
               name="password"
+              autoComplete="true"
               value={form.password}
               onChange={handleChange}
               className={`px-4 py-3 border rounded-md focus:ring-2 focus:outline-none focus:ring-[var(--primary-color)] ${
@@ -245,6 +247,7 @@ export default function Signup({ closePopup }) {
               id="confirmPassword"
               type="password"
               name="confirmPassword"
+              autoComplete="true"
               value={form.confirmPassword}
               onChange={handleChange}
               className={`px-4 py-3 border rounded-md focus:ring-2 focus:outline-none focus:ring-[var(--primary-color)] ${
