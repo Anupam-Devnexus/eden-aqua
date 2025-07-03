@@ -45,8 +45,10 @@ export default function RazorpayButton({ amountUSD, product }) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           amount: Math.round(amountUSD), // convert amount to cents (smallest currency unit)
-          currency: "USD", // currency code
-          product, // pass product info (optional, useful for backend notes)
+          // currency: "USD",
+           // currency code
+          // product,
+           // pass product info (optional, useful for backend notes)
         }),
       });
 
@@ -61,7 +63,7 @@ export default function RazorpayButton({ amountUSD, product }) {
         name: "EDEN AQUA", // Company/store name displayed on checkout
         description: product.Name || "Order Payment", // Description of the purchase
         image: product.ProductImage, // Optional product image/logo shown on checkout
-        order_id: orderData._id, // Order ID from backend, required for Razorpay payment validation
+        order_id: orderData.id, // Order ID from backend, required for Razorpay payment validation
 
         // Callback function invoked after payment is completed
         handler: async function (response) {
@@ -69,12 +71,12 @@ export default function RazorpayButton({ amountUSD, product }) {
           const verifyRes = await fetch(`${apiBase}/payment/verify`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ ...response, product }), // pass Razorpay response + product info
+            body: JSON.stringify(response ), // pass Razorpay response + product info
           });
 
           const verifyData = await verifyRes.json();
-
-          if (verifyData.status === "Payment verified") {
+console.log(verifyData);
+          if (verifyData.success === true) {
             toast.success("Payment successful!"); // Show success message
           } else {
             toast.error("Payment verification failed"); // Show error message
