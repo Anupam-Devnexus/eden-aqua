@@ -1,6 +1,8 @@
 import './App.css';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { lazy, Suspense } from 'react';
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 import { Toaster } from 'react-hot-toast';
 import ScrollToTop from './Components/SingleComponents/ScrollToTop';
 // Lazy-loaded components
