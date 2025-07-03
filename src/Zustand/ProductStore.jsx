@@ -9,10 +9,15 @@ const useProductStore = create(
 
       setProducts: (newProducts) => set({ products: newProducts }),
 
-      addProduct: (product) =>
-        set((state) => ({
-          products: [...state.products, product],
-        })),
+     addProduct: (product) =>
+  set((state) => {
+    const exists = state.products.some((p) => p.id === product.id);
+    if (exists) return state;
+    return {
+      products: [...state.products, product],
+    };
+  }),
+
 
       updateProductQuantity: (id, quantity) =>
         set((state) => ({

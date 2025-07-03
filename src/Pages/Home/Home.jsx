@@ -12,7 +12,7 @@ export default function Shop() {
     useEffect(() => {
         fetchProducts();
     }, []);
-    // console.log("productlist", productlist);
+    console.log("productlist", productlist);
     const navigate = useNavigate()
     const data = [
         {

@@ -19,6 +19,7 @@ const Signup = lazy(() => import('./Pages/Signup/Signup'));
 const Login = lazy(() => import('./Pages/LogIn/Login'));
 const ForgetPassword = lazy(() => import('./Pages/ForgetPassword/ForgetPassword'));
 const UserProfile = lazy(() => import("./Pages/Userprofile/Up"));
+const ProductDetails = lazy(() => import('./Pages/ProductDetailsPage/Pdp'));
 
 function App() {
   return (
@@ -42,6 +43,7 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/forget-password" element={<ForgetPassword />} />
             <Route path="/user-profile" element={<UserProfile />} />
+            <Route path="/product/:id" element={<ProductDetails />} />
 
             {/* Catch-all route */}
             <Route path="*" element={<Navigate to="/" replace />} />

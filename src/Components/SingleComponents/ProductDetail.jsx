@@ -12,15 +12,15 @@ export default function ProductDetails() {
   const [caseCount, setCaseCount] = useState(1);
 
   const { productlist = [], fetchProducts } = getProductStore();
-  const { addProduct } = useProductStore();
+  const { addProduct, products } = useProductStore();
 
   useEffect(() => {
     fetchProducts();
   }, []);
 
   const product = productlist[productIndex];
+  const isInCart = products.some((p) => p.id === product?._id);
 
-  // Update images when product changes
   useEffect(() => {
     setImageIndex(0);
     setCaseCount(1);
@@ -36,8 +36,7 @@ export default function ProductDetails() {
 
   const prevImage = () => {
     setImageIndex((prev) =>
-      (prev - 1 + (product?.Sub_Images?.length || 1)) %
-      (product?.Sub_Images?.length || 1)
+      (prev - 1 + (product?.Sub_Images?.length || 1)) % (product?.Sub_Images?.length || 1)
     );
   };
 
@@ -53,21 +52,27 @@ export default function ProductDetails() {
 
   const handleAddToCart = () => {
     if (!product) return;
+    if (isInCart) {
+      toast.error("Product already in cart!");
+      return;
+    }
 
     const productData = {
-      id: product._id || Date.now(),
+      id: product._id,
       name: product.Name,
       price: product.Price,
       quantity: caseCount,
       caseQuantity: product.BottbottlesPerCase || 1,
       totalBottles: caseCount * (product.BottbottlesPerCase || 1),
-      totalPrice: (product.Price * caseCount).toFixed(2),
+      totalPrice: (
+        product.Price * caseCount * (product.BottbottlesPerCase || 1)
+      ).toFixed(2),
       image: product.Sub_Images?.[0],
       size: product.Capacity,
     };
 
     addProduct(productData);
-    toast.success(`${product.Name} (${caseCount} case${caseCount > 1 ? 's' : ''}) added to cart!`);
+    toast.success(`${product.Name} (${caseCount} case${caseCount > 1 ? "s" : ""}) added to cart!`);
   };
 
   if (!productlist.length) {
@@ -104,7 +109,9 @@ export default function ProductDetails() {
               key={idx}
               src={img}
               alt={`thumb-${idx}`}
-              className={`w-10 h-10 object-cover border rounded cursor-pointer ${imageIndex === idx ? 'border-[var(--primary-color)]' : 'border-gray-300'}`}
+              className={`w-10 h-10 object-cover border rounded cursor-pointer ${
+                imageIndex === idx ? "border-[var(--primary-color)]" : "border-gray-300"
+              }`}
               onClick={() => setImageIndex(idx)}
             />
           ))}
@@ -186,9 +193,14 @@ export default function ProductDetails() {
 
           <button
             onClick={handleAddToCart}
-            className="w-full sm:w-auto bg-[var(--primary-color)] text-white font-semibold px-6 py-3 rounded-md hover:bg-[var(--fifth-color)] transition"
+            disabled={isInCart}
+            className={`w-full sm:w-auto font-semibold px-6 py-3 rounded-md transition ${
+              isInCart
+                ? "bg-gray-400 cursor-not-allowed text-white"
+                : "bg-[var(--primary-color)] text-white hover:bg-[var(--fifth-color)]"
+            }`}
           >
-            ADD TO CART
+            {isInCart ? "Already in Cart" : "ADD TO CART"}
           </button>
         </div>
       </div>
