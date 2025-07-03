@@ -99,6 +99,12 @@ export default function Signup({ closePopup }) {
       const responseData = await res.json();
       toast.success("Registration successful!", { id: toastId });
 
+      if (responseData.accessToken) {
+        localStorage.setItem("accessToken", data.accessToken);
+      }
+
+      toast.success("Registration successful!", { id: toastId });
+
       // Clear form (optional)
       setForm({ name: "", phone: "", email: "", password: "", confirmPassword: "" });
       setTermsAccepted(false);
@@ -144,9 +150,8 @@ export default function Signup({ closePopup }) {
               name="name"
               value={form.name}
               onChange={handleChange}
-              className={`px-4 py-3 border rounded-md focus:ring-2 focus:outline-none focus:ring-[var(--primary-color)] ${
-                errors.name ? "border-red-500" : ""
-              }`}
+              className={`px-4 py-3 border rounded-md focus:ring-2 focus:outline-none focus:ring-[var(--primary-color)] ${errors.name ? "border-red-500" : ""
+                }`}
               placeholder="Your full name"
               aria-invalid={!!errors.name}
               aria-describedby="error-name"
@@ -169,9 +174,8 @@ export default function Signup({ closePopup }) {
               name="phone"
               value={form.phone}
               onChange={handleChange}
-              className={`px-4 py-3 border rounded-md focus:ring-2 focus:outline-none focus:ring-[var(--primary-color)] ${
-                errors.phone ? "border-red-500" : ""
-              }`}
+              className={`px-4 py-3 border rounded-md focus:ring-2 focus:outline-none focus:ring-[var(--primary-color)] ${errors.phone ? "border-red-500" : ""
+                }`}
               placeholder="10-digit phone number"
               maxLength={10}
               aria-invalid={!!errors.phone}
@@ -195,9 +199,8 @@ export default function Signup({ closePopup }) {
               name="email"
               value={form.email}
               onChange={handleChange}
-              className={`px-4 py-3 border rounded-md focus:ring-2 focus:outline-none focus:ring-[var(--primary-color)] ${
-                errors.email ? "border-red-500" : ""
-              }`}
+              className={`px-4 py-3 border rounded-md focus:ring-2 focus:outline-none focus:ring-[var(--primary-color)] ${errors.email ? "border-red-500" : ""
+                }`}
               placeholder="example@mail.com"
               aria-invalid={!!errors.email}
               aria-describedby="error-email"
@@ -221,9 +224,8 @@ export default function Signup({ closePopup }) {
               autoComplete="true"
               value={form.password}
               onChange={handleChange}
-              className={`px-4 py-3 border rounded-md focus:ring-2 focus:outline-none focus:ring-[var(--primary-color)] ${
-                errors.password ? "border-red-500" : ""
-              }`}
+              className={`px-4 py-3 border rounded-md focus:ring-2 focus:outline-none focus:ring-[var(--primary-color)] ${errors.password ? "border-red-500" : ""
+                }`}
               placeholder="At least 6 characters"
               aria-invalid={!!errors.password}
               aria-describedby="error-password"
@@ -250,9 +252,8 @@ export default function Signup({ closePopup }) {
               autoComplete="true"
               value={form.confirmPassword}
               onChange={handleChange}
-              className={`px-4 py-3 border rounded-md focus:ring-2 focus:outline-none focus:ring-[var(--primary-color)] ${
-                errors.confirmPassword ? "border-red-500" : ""
-              }`}
+              className={`px-4 py-3 border rounded-md focus:ring-2 focus:outline-none focus:ring-[var(--primary-color)] ${errors.confirmPassword ? "border-red-500" : ""
+                }`}
               placeholder="Re-enter your password"
               aria-invalid={!!errors.confirmPassword}
               aria-describedby="error-confirmPassword"

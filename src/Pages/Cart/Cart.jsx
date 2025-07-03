@@ -3,6 +3,7 @@ import { FaPlus, FaMinus, FaTrash } from "react-icons/fa";
 import NewsLetter from "../../Components/SingleComponents/NewsLetter";
 import useProductStore from "../../Zustand/ProductStore";
 import { useNavigate } from "react-router-dom";
+import RazorpayButton from "../../RazorPay/Razorpay";
 export default function Cart() {
 
   const navigate = useNavigate();
@@ -139,12 +140,15 @@ export default function Cart() {
             >
               Clear Cart
             </button>
-            <button
-              onClick={() => alert("Proceed to payment clicked!")}
-              className="bg-[var(--primary-color)] text-white px-8 py-3 rounded-md font-semibold hover:bg-[var(--fifth-color)] transition"
-            >
-              Proceed to Payment
-            </button>
+           <RazorpayButton
+  amountUSD={totalPayable}
+  product={{
+    id: "cart_checkout",
+    name: "EDEN AQUA Order",
+    items: products,
+  }}
+/>
+
           </div>
         </div>
       </div>

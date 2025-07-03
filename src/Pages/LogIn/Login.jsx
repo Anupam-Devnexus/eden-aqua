@@ -81,6 +81,7 @@ export default function Login() {
             name="password"
             placeholder="Password"
             value={form.password}
+            autoComplete="true"
             onChange={handleChange}
             className="border px-4 py-2 rounded-md focus:ring-2 focus:outline-none focus:ring-[var(--primary-color)]"
             required
